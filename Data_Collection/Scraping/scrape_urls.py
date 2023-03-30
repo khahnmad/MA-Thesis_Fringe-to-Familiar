@@ -1,3 +1,7 @@
+"""
+Scrapes the text from the Media Cloud urls collected
+"""
+# Imports
 from bs4 import BeautifulSoup as bs
 import requests
 import time
@@ -8,7 +12,8 @@ import glob
 import json
 from lxml import etree
 
-from scraping_config import error_handling as e
+from Data_Collection.Scraping import error_handling as e
+mediacloud_dir = uf.repo_loc / "Data_Collection/Media_Cloud"
 
 
 def check_empty_ptags(url:str, soup_text:str)->str:
@@ -472,11 +477,11 @@ def collect_text(dataset, title, starting_point=1):
     uf.export_nested_list(f"{title}_complete_unclean_text.csv", dataset)
     print('PROCESS COMPLETE')
 
+# MAIN FUNCTIONS
 
 def scrape_normally():
-    all_queries = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\datasets\\' + "/*.csv")]
-    url_queries = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\datasets\\' + "/*.csv") if
-                   'urls' in x]
+    all_queries = [x for x in glob.glob(str(mediacloud_dir)  + "/*.csv")]
+    url_queries = [x for x in glob.glob(str(mediacloud_dir)  + "/*.csv") if 'urls' in x]
     for file in url_queries:
         completed_file = file.replace('urls', 'text')
         if completed_file not in all_queries:
@@ -489,8 +494,8 @@ def scrape_normally():
 
 
 def scrape_from_checkpoint():
-    all_queries = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\datasets\\' + "/*.csv")]
-    url_queries = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\datasets\\' + "/*.csv") if
+    all_queries = [x for x in glob.glob(str(mediacloud_dir) + "/*.csv")]
+    url_queries = [x for x in glob.glob(str(mediacloud_dir)  + "/*.csv") if
                    'urls' in x]
     for file in url_queries:
         completed_file = file.replace('urls', 'text')
@@ -503,16 +508,10 @@ def scrape_from_checkpoint():
                 new_file_name = file[:-4]
                 collect_text(imported_data, new_file_name, int(checkpoint))
 
-
-# # # NORMAL RUN # # #
+# # # # NORMAL RUN # # #
 # scrape_normally()
-
-## Post-checkpoint run
+#
+# ## Post-checkpoint run
 # scrape_from_checkpoint()
 
-# # # Double check specific articles
-# check=[
-# 'https://www.ibtimes.com/cult-trump-why-these-politicians-are-leaving-gop-3134916?utm_source=Public&utm_medium=Feed&utm_campaign=Distribution']
-# for url in check:
-#     x = access_article(url)
-#     print('check')
+

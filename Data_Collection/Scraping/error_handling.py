@@ -1,4 +1,9 @@
-""" EMPTY P-TAG URL ERRORS """
+"""
+This script contains hard coded urls and text that indicate a certain error.
+It is used in the scraping.py script
+"""
+
+# EMPTY P-TAG URL ERRORS
 empty_ptag_url_errors = {'404 Page not found': ['feeds.foxnews.com/', 'pjmedia.com/blog', 'weny.com',
                                                 'americantoday.news','supremepatriot.com','highschoolsports.al.com',
                                                 'www.philly.com','rightalert.com/','InfiniteUnknown/','newsbreakapp.com'],

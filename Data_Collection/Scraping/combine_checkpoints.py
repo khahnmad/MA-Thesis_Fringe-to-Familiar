@@ -1,3 +1,6 @@
+"""
+This script combines the duplicate scraped files
+"""
 import universal_functions as uf
 
 

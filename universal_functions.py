@@ -13,11 +13,14 @@ import json
 import matplotlib.pyplot as plt
 import pickle
 import numpy as np
-
+from pathlib import Path
+from os.path import dirname
 
 ### VARIABLES ###
-nep_location = 'C:\\Users\\khahn\\Documents\\Github\\Thesis\\NarrativeExtractionPipeline\\'
-thesis_location = 'C:\\Users\\khahn\\Documents\\Github\\Thesis\\'
+# nep_location = 'C:\\Users\\khahn\\Documents\\Github\\Thesis\\NarrativeExtractionPipeline\\'
+# thesis_location = 'C:\\Users\\khahn\\Documents\\Github\\Thesis\\'
+repo_loc = Path(dirname(__file__))
+
 
 ### IMPORTING ###
 def manage_overflow():
@@ -85,7 +88,7 @@ def load_files(req_strings: list, dataset_files:List[str]) -> List[str]:
 
 def load_files_from_dataset(req_strings: list) -> list:
     # Given query strings (req_strings), returns a list of file locations from the dataset that match
-    all_dataset_files = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\datasets\\' + "/*.csv")]
+    all_dataset_files = [x for x in glob.glob(str(repo_loc / "Data_Collection/Media_Cloud") + "/*.csv")]
     relevant_files = load_files(req_strings, all_dataset_files)
     return relevant_files
 

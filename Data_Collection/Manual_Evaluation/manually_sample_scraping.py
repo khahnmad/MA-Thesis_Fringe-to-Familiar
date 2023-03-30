@@ -1,7 +1,9 @@
 import universal_functions as uf
 import random
-import scraping as scrape
+from Data_Collection.Scraping import scrape_urls as scrape
 
+
+man_eval_dir = uf.repo_loc / 'Data_Collection/Manual_Evaluation'
 
 # change uf importation, check that the usage in the scraping evaluation works
 def get_partisanship_year(filename):
@@ -15,11 +17,12 @@ def get_partisanship_year(filename):
                     dataset_name = f"{partisan_ids[key]}_{yr}"
     return dataset_name
 
+
 def manually_sample(files:list, n:int):
-    manual_file_name = 'C:\\Users\\khahn\\Documents\\Github\\Thesis\\scraping_evals\\associated_python\\Manual_evaluation.csv'
+    manual_file_name = man_eval_dir / 'Manual_evaluation.csv'
     record_dict = uf.load_manual_eval_as_dict() # Import the manual evaluation file as a dictionary
 
-    progress_file = uf.import_csv('/dataset_eval\\Manual_Evaluation_Progress.csv')
+    progress_file = uf.import_csv(man_eval_dir / 'Manual_Evaluation_Progress.csv')
     progress_dict = {x[0]:float(x[1]) for x in progress_file} # Records the percent of the dataset that has been manually evaluated
 
     try:
@@ -102,10 +105,3 @@ def manually_sample(files:list, n:int):
 complete_text = uf.load_files_from_dataset(['text'])
 result = manually_sample(complete_text, 1)
 print(result)
-# fix
-# manual_eval = uf.import_csv('C:\\Users\\khahn\\Documents\\Github\\Thesis\\scraping_evals\\Manual_evaluation.csv')
-# for item in manual_eval:
-#     filename = item[0]
-#     item[0]=filename.replace('PycharmProjects\\Thesis_explo','Documents\\Github\\Thesis')
-#     print('check')
-# uf.export_nested_list('C:\\Users\\khahn\\Documents\\Github\\Thesis\\scraping_evals\\Manual_evaluation.csv',manual_eval)

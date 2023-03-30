@@ -1,8 +1,9 @@
 import universal_functions as uf
-import scraping as scrape
+from Data_Collection.Scraping import scrape_urls as scrape
 import re
 import glob
 
+mediacloud_dir = uf.repo_loc / 'Data_Collection/Media_Cloud'
 
 def check_error_handling(url:str, text:str):
     # error handling from scraping
@@ -74,7 +75,7 @@ def look_for_fp_in_dataset(file:str):
                 feeder_data = uf.import_csv(key)
             except FileNotFoundError:
                 collection = get_collection(key)
-                datasets = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\datasets\\' + "/*.csv") if year in x and collection in x and 'text' in x]
+                datasets = [x for x in glob.glob(str(mediacloud_dir) + "/*.csv") if year in x and collection in x and 'text' in x]
                 feeder_data = uf.import_csv(datasets[0])
 
 
@@ -92,7 +93,7 @@ def find_successful_extras(file, bad_ids, bad_indexes):
     # Find overby file
     partisanship = get_partisanship(file)
     year = get_year(file)
-    overby_files = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\prepped_dataset\\' + "/*.csv") if
+    overby_files = [x for x in glob.glob(str(mediacloud_dir) + "/*.csv") if
      year in x and partisanship in x and 'OVERBY' in x]
 
     if len(overby_files)==0:

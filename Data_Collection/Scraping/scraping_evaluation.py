@@ -1,15 +1,18 @@
 import glob
 import universal_functions as uf
 from collections import Counter
-import scraping as scrape
 import random
 import time
 from typing import List
-from scraping_config import error_handling as e
 
+from Data_Collection.Scraping import scrape_urls as scrape
+from Data_Collection.Scraping import error_handling as e
+
+scrape_dir = uf.repo_loc / 'Data_Collection/Scraping'
+mediacloud_dir = uf.repo_loc / 'Data_Collection/Media_Cloud'
 
 # GLOBAL
-all_scraping_evals = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\scraping_evals\\' + "/*.csv")]
+all_scraping_evals = [x for x in glob.glob(str(scrape_dir) + "/*.csv")]
 manual_eval_dict = uf.load_manual_eval_as_dict()
 
 
@@ -140,11 +143,11 @@ def investigate_error_messages(data: list, i: int):
 
 def check_for_prev_evaluations(filename):
 
-    prev_evaluations = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\scraping_evals\\' + "/*.csv")
+    prev_evaluations = [x for x in glob.glob(str(scrape_dir) + "/*.csv")
                         if filename[48:-6].replace('text','eval') in x]
     if len(filename)==68 or len(filename)==70:
         prev_evaluations = [x for x in
-                            glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\scraping_evals\\' + "/*.csv")
+                            glob.glob(str(scrape_dir) + "/*.csv")
                             if filename[48:-4].replace('text', 'eval') in x]
     rates = []
     fixed_num = 'no'
@@ -173,7 +176,7 @@ def check_for_failed_scrapes(eval_result:List[List[int]]):
 
 
 ### ACTION ###
-all_complete_text = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\datasets\\' + "/*.csv") if
+all_complete_text = [x for x in glob.glob(str(mediacloud_dir) + "/*.csv") if
                      'text' in x]
 for item in all_complete_text:
     print(f"\nFor dataset: {item}")

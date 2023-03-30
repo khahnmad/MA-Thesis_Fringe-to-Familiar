@@ -1,6 +1,8 @@
+"""
+This script queries Media Cloud collections and collects urls
+"""
 from dotenv import load_dotenv
-load_dotenv() # TODO: is there a better way to do this?
-
+load_dotenv()
 # Imports
 import os, mediacloud.api
 import datetime

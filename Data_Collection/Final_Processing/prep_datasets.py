@@ -6,8 +6,6 @@ Requirements:
 - from the right time period
 - balanced in size
 - handle duplicates
-
-10 day cycle? Exclude what's outside of 10 days?
 """
 import universal_functions as uf
 from datetime import datetime
