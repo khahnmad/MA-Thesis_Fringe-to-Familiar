@@ -14,6 +14,7 @@ from lxml import etree
 
 from Data_Collection.Scraping import error_handling as e
 mediacloud_dir = uf.repo_loc / "Data_Collection/Media_Cloud"
+scraping_dir = uf.repo_loc / "Data_Collection/Scraping"
 
 
 def check_empty_ptags(url:str, soup_text:str)->str:
@@ -480,10 +481,10 @@ def collect_text(dataset, title, starting_point=1):
 # MAIN FUNCTIONS
 
 def scrape_normally():
-    all_queries = [x for x in glob.glob(str(mediacloud_dir)  + "/*.csv")]
-    url_queries = [x for x in glob.glob(str(mediacloud_dir)  + "/*.csv") if 'urls' in x]
+    all_queries = [x for x in glob.glob(str(scraping_dir / 'Text')  + "/*.csv")]
+    url_queries = [x for x in glob.glob(str(mediacloud_dir / 'Urls')  + "/*.csv")]
     for file in url_queries:
-        completed_file = file.replace('urls', 'text')
+        completed_file = file.replace('Urls', 'Text')
         if completed_file not in all_queries:
             print('Should I scrape this file? Input Y for yes:', file)
             skip = input()
@@ -494,8 +495,8 @@ def scrape_normally():
 
 
 def scrape_from_checkpoint():
-    all_queries = [x for x in glob.glob(str(mediacloud_dir) + "/*.csv")]
-    url_queries = [x for x in glob.glob(str(mediacloud_dir)  + "/*.csv") if
+    all_queries = [x for x in glob.glob(str(scraping_dir / 'Text') + "/*.csv")]
+    url_queries = [x for x in glob.glob(str(mediacloud_dir / 'Urls')  + "/*.csv") if
                    'urls' in x]
     for file in url_queries:
         completed_file = file.replace('urls', 'text')
@@ -509,9 +510,9 @@ def scrape_from_checkpoint():
                 collect_text(imported_data, new_file_name, int(checkpoint))
 
 # # # # NORMAL RUN # # #
-# scrape_normally()
+scrape_normally()
 #
 # ## Post-checkpoint run
-# scrape_from_checkpoint()
+scrape_from_checkpoint()
 
 

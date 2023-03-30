@@ -7,8 +7,10 @@ import time
 import re
 from typing import List
 
-from NarrativeExtractionPipeline.config import import_functions as imp
-from NarrativeExtractionPipeline.config import pipeline_types as t
+from Deconstruction_Phase.config import import_functions as imp
+from Deconstruction_Phase.config import pipeline_types as t
+
+sro_dir = uf.repo_loc / 'Deconstruction_Phase/SRO_Instances'
 
 tsc = TargetSentimentClassifier()  # initialize classifier
 
@@ -103,9 +105,7 @@ def run_sentiment_analyzer(filename):
 
 
 if __name__ == '__main__':
-    SRO_files = [x for x in glob.glob(
-        'C:\\Users\\khahn\\Documents\\Github\\Thesis\\NarrativeExtractionPipeline\\SRO_Instances' + "/*.json") if
-                 'checkpoint' not in x]
+    SRO_files = [x for x in glob.glob(str(sro_dir) + "/*.json") if 'checkpoint' not in x]
     for file in SRO_files[19:]:
         print(f'Running {file}...')
         response = run_sentiment_analyzer(file)

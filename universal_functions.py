@@ -95,7 +95,7 @@ def load_files_from_dataset(req_strings: list) -> list:
 
 def load_files_from_prepped_datasets(req_strings:list)-> list:
     # Given query strings (req_strings), returns a list of file locations from the prepped dataset that match
-    all_dataset_files = [x for x in glob.glob('C:\\Users\\khahn\\Documents\\Github\\Thesis\\prepped_dataset\\' + "/*.csv")]
+    all_dataset_files = [x for x in glob.glob(str(repo_loc / 'Data_Collection/Final_Processing/Datasets') + "/*.csv")]
     relevant_files = load_files(req_strings, all_dataset_files)
     return relevant_files
 

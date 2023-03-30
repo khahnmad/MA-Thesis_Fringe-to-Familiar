@@ -10,7 +10,9 @@ import time
 # import mediacloud.tags
 import csv
 import requests
+import universal_functions as uf
 
+mediacloud_dir = uf.repo_loc / 'Data_Collection/Media_Cloud'
 
 # Functions
 def setup():
@@ -95,10 +97,10 @@ def collection_pipeline(start_date, keyword, collection, length):
 
     # Export data
     if keyword:
-        title = f'{start_date.year}-{start_date.month}-{start_date.day}_{keyword}.csv'
+        title = str(mediacloud_dir / 'Urls') + f'{start_date.year}-{start_date.month}-{start_date.day}_{keyword}.csv'
     else:
         # title = f'{start_date.year}-{start_date.month}-{start_date.day}_{collection}.csv'
-        title = f'{collection}_urls_{start_date.month}-{start_date.day}-{start_date.year}.csv'
+        title = str(mediacloud_dir / 'Urls') + f'{collection}_urls_{start_date.month}-{start_date.day}-{start_date.year}.csv'
     write_csv(stories, title)
     print('PROCESS COMPLETE')
 

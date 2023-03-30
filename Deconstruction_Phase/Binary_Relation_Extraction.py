@@ -11,8 +11,8 @@ import re
 import time
 from typing import List
 
-from NarrativeExtractionPipeline.config import pipeline_types as t
-from NarrativeExtractionPipeline.config import import_functions as imp
+from Deconstruction_Phase.config import pipeline_types as t
+from Deconstruction_Phase.config import import_functions as imp
 """
 Should apply some kind of cleaning to select unique and high-precision extractions, like in Tangherlini
 at the very least, lowercasing of the args and rels
@@ -126,7 +126,7 @@ if __name__ == '__main__':
     prepped_dataset = uf.load_all_complete_datasets()
     previous_exports = [x for x in glob.glob('SRO_Instances\\' + "/*.json")]
 
-    for file in prepped_dataset[16:]:
+    for file in prepped_dataset:
         dataset_name = uf.get_dataset_id(file) # Get dataset name
         highest_count = find_previous_runs(previous_exports, dataset_name) # Find the highest previous export of this file
 
@@ -164,7 +164,6 @@ if __name__ == '__main__':
         export_filename = f"SRO_Instances\\{dataset_name}_SRO.json"
         export_content = json.dumps({'content': output})
         uf.export_as_json(export_filename, export_content)
-
 
 
 """
