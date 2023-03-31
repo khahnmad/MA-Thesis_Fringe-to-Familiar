@@ -11,8 +11,8 @@ import re
 import time
 from typing import List
 
-from Deconstruction_Phase.config import pipeline_types as t
-from Deconstruction_Phase.config import import_functions as imp
+from config import pipeline_types as t, import_functions as imp
+
 """
 Should apply some kind of cleaning to select unique and high-precision extractions, like in Tangherlini
 at the very least, lowercasing of the args and rels

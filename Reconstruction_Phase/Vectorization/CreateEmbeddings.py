@@ -1,10 +1,18 @@
 import json
 import re
-from locally_createEmbeddings import BERT_model as b, shared_functions as sf
+
+from Reconstruction_Phase.Vectorization import BERT_model as b
 import universal_functions as uf
+from config import import_functions as imp
 
 # Global variables
-from locally_createEmbeddings.shared_functions import reduced_sro_dir, embeddings_dir, sro_instances_idr
+sro_dir = uf.repo_loc / 'Deconstruction_Phase/SRO_Instances'
+
+reconstruction_dir = uf.repo_loc / 'Reconstruction_Phase'
+
+reduced_sro_dir = reconstruction_dir / 'Vectorization/Reduced_SRO'
+embeddings_dir = reconstruction_dir / 'Vectorization/Embeddings'
+
 
 def fetch_similar_triplets(data, article_id, sentence_id):
     same_sent = [x for x in data if x['article_id'] == article_id and x['sentence_id'] == sentence_id]
@@ -46,7 +54,7 @@ def remove_extra_sentences(topic, dataset_name, clean_data, starting_point, id_r
             print(f"    Dumping checkpoint at {i}.... {(i/len(topic))*100}% complete")
             export_name = str(reduced_sro_dir / f"{dataset_name}_Reduced_SROs_checkpoint_{i}.json")
             a_content = json.dumps({'content': {"clean_data":clean_data, "id_record":id_record}})
-            sf.export_as_json(export_name, a_content)
+            uf.export_as_json(export_name, a_content)
     return clean_data
 
 
@@ -56,30 +64,30 @@ def reduce_data(dataset_name, loc):
 
     if export_name in prev_files:
         print(f'    Importing reduced data for {dataset_name}...')
-        sro_data = sf.import_json_content(export_name)
+        sro_data = uf.import_json_content(export_name)
     else:
 
         print(f'    Reducing data from {dataset_name}...')
 
-        sro_data = sf.import_SRO_data_from_file(loc, as_dict=True)
-        sro_data = [x for x in sf.flatten_list(sro_data) if isinstance(x, str) == False]
+        sro_data = imp.import_SRO_data_from_file(loc, as_dict=True)
+        sro_data = [x for x in uf.flatten_list(sro_data) if isinstance(x, str) == False]
         existing_data, start_point= find_highest_prevfile(loc)
         if existing_data=='complete':
             print(f'    Importing reduced data for {dataset_name}...')
-            sro_data = sf.import_json_content(export_name)
+            sro_data = uf.import_json_content(export_name)
             return sro_data
         sro_data = remove_extra_sentences(sro_data, dataset_name, clean_data=existing_data['clean_data'], starting_point=start_point,
                                           id_record=existing_data['id_record'])
 
         a_content = json.dumps({'content': sro_data})
-        sf.export_as_json(str(export_name), a_content)
+        uf.export_as_json(str(export_name), a_content)
 
     return sro_data
 
 
 def find_highest_checkpoint(filename):
     # NOTE: THIS IS FROM BEFORE I CHANGED TO USING THE REDUCED SYSTEM
-    dataset_name = sf.get_dataset_id(filename)
+    dataset_name = uf.get_dataset_id(filename)
     prev_files = [str(x) for x in list(embeddings_dir.iterdir())]
     # TODO: Made relative
 
@@ -97,7 +105,7 @@ def find_highest_checkpoint(filename):
 
 def find_highest_prevfile(filename):
     # NOTE: THIS IS FROM BEFORE I CHANGED TO USING THE REDUCED SYSTEM
-    dataset_name = sf.get_dataset_id(filename)
+    dataset_name = uf.get_dataset_id(filename)
     prev_files = [str(x) for x in list(reduced_sro_dir.iterdir())]
 
 
@@ -109,16 +117,16 @@ def find_highest_prevfile(filename):
             regex = r"(?<=checkpoint\_)(.*?)(?=\.json)"
             checkpoint = int(re.findall(regex, file)[0])
             if checkpoint > highest[0]:
-                data = sf.import_json_content(file)
+                data = uf.import_json_content(file)
                 highest = [checkpoint+1, data]
     return highest[1], highest[0] # file data, starting point
 
 def create_embeddings():
-    sro_locs = list(sro_instances_idr.iterdir())
+    sro_locs = list(sro_dir.iterdir())
     for loc in sro_locs[33:]:
         print(f'Running {loc}...')
 
-        dataset_name = sf.get_dataset_id(loc)
+        dataset_name = uf.get_dataset_id(loc)
         sro_data = reduce_data(dataset_name, loc)
 
         prev_file, starting_point = find_highest_checkpoint(loc)
@@ -126,7 +134,7 @@ def create_embeddings():
         if prev_file != None:
             if prev_file != 'complete':
                 try:
-                    embeddings = sf.import_pkl_file(prev_file)
+                    embeddings = uf.import_pkl_file(prev_file)
                 except EOFError:
                     print(F"EOF Error: {dataset_name}")
             else:
@@ -138,6 +146,6 @@ def create_embeddings():
 
         embeddings = b.generate_embeddings_for_dataset(sro_data=sro_data,mode='whole_triplet',dataset_name=dataset_name,
                                           starting_point=starting_point,embeddings=embeddings)
-        uf.export_as_pkl(sf.embeddings_dir / f"{dataset_name}_embeddings.pkl", embeddings)
+        uf.export_as_pkl(embeddings_dir / f"{dataset_name}_embeddings.pkl", embeddings)
 if __name__ == '__main__':
     create_embeddings()

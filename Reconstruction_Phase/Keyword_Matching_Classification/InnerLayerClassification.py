@@ -1,16 +1,19 @@
 import universal_functions as uf
-from NarrativeExtractionPipeline.config import import_functions as imp
+from config import import_functions as imp
 import re
 from typing import List
 
-# GLOBAL
-keyword_dict = uf.import_json_content(f"{uf.nep_location}Reconstruction_Phase\\Keyword_Identification\\valid_keywords."
-                                      f"json")
-w_sent_embeddings_loc = uf.get_files_from_folder(f"{uf.thesis_location}locally_createEmbeddings\\Sent_Embeddings","pkl")
-no_sent_emb_loc = uf.get_files_from_folder(f"{uf.thesis_location}locally_createEmbeddings\\Embeddings","pkl")
-embeddings_loc = w_sent_embeddings_loc+no_sent_emb_loc
+reconstruction_dir = uf.repo_loc / 'Reconstruction_Phase'
+matching_output_dir = reconstruction_dir / 'Keyword_Matching_Classification/output'
 
-inner_locs = uf.get_files_from_folder(f"{uf.nep_location}Reconstruction_Phase\\Keyword_Matching", "pkl")
+# GLOBAL
+keyword_dict = uf.import_json_content(reconstruction_dir / 'Keyword_Identification/valid_keywords.json')
+# w_sent_embeddings_loc = uf.get_files_from_folder(f"{uf.thesis_location}locally_createEmbeddings\\Sent_Embeddings","pkl")
+# no_sent_emb_loc = uf.get_files_from_folder(f"{uf.thesis_location}locally_createEmbeddings\\Embeddings","pkl")
+# embeddings_loc = w_sent_embeddings_loc+no_sent_emb_loc
+embeddings_loc= uf.get_files_from_folder(str(reconstruction_dir / 'Vectorization/Embeddings'),'pkl')
+
+inner_locs = uf.get_files_from_folder(str(reconstruction_dir / 'Keyword_Matching_Classification/output'), "pkl")
 
 
 def find_inner_layer_classifications(embeddings:List):
@@ -56,7 +59,7 @@ for loc in embeddings_loc:
     highest_file, emb_checkpoint = find_highest_file(filename=loc, folder=embeddings_loc)
 
     # Check if there has already been a round of classification for this file
-    export_name = f"{uf.nep_location}Reconstruction_Phase\\Keyword_Matching\\{dataset_name}_Emb{emb_checkpoint}.pkl"
+    export_name = str(matching_output_dir) + f"{dataset_name}_Emb{emb_checkpoint}.pkl"
     if export_name in inner_locs:
         print("-- already complete --\n")
         continue # the file has already been run

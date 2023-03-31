@@ -7,8 +7,7 @@ import time
 import re
 from typing import List
 
-from Deconstruction_Phase.config import import_functions as imp
-from Deconstruction_Phase.config import pipeline_types as t
+from config import pipeline_types as t, import_functions as imp
 
 sro_dir = uf.repo_loc / 'Deconstruction_Phase/SRO_Instances'
 

@@ -1,5 +1,5 @@
 import json
-from Deconstruction_Phase.config import pipeline_types as t
+from config import pipeline_types as t
 import pickle
 from pickle import UnpicklingError
 
