@@ -7,16 +7,17 @@ import universal_functions as uf
 import re
 
 # GLOBAL
-old_cos_loc= f"{uf.nep_location}BertClusteringClassification\\CosineClassification"
-old_cos_w_sent_loc = f"{old_cos_loc}\\Sent_Embeddings"
+low_cos_loc = uf.repo_loc / 'Reconstruction_Phase/Cosine_Matching_Classification/output/low'
+low_cos_files = uf.get_files_from_folder(low_cos_loc, "pkl")
 
-cos_matching_loc = f"{uf.nep_location}Reconstruction_Phase\\Cosine_Matching"
-key_matching_loc = f"{uf.nep_location}Reconstruction_Phase\\Keyword_Matching"
+# old_cos_loc= f"{uf.nep_location}BertClusteringClassification\\CosineClassification"
+# old_cos_w_sent_loc = f"{old_cos_loc}\\Sent_Embeddings"
 
+high_cos_matching_loc = uf.repo_loc / 'Reconstruction_Phase/Cosine_Matching_Classification/output/high'
+high_cos_files = uf.get_files_from_folder(high_cos_matching_loc, 'pkl')
+
+key_matching_loc = uf.repo_loc / 'Reconstruction_Phase/Keyword_Matching_Classification/output'
 keywordmatch_locs = uf.get_files_from_folder(key_matching_loc, 'pkl')
-cos_files = uf.get_files_from_folder(cos_matching_loc, 'pkl')
-
-old_cos_files = uf.get_files_from_folder(old_cos_loc,"pkl")+uf.get_files_from_folder(old_cos_w_sent_loc,"pkl")
 
 cos = torch.nn.CosineSimilarity(dim=0)
 
@@ -135,13 +136,13 @@ def classify_remaining_text(unclassified_data, inner_layer_data, starting_point)
     return classified
 
 def run_cosineimilarity_update():
-    for file in old_cos_files[39:]:
+    for file in low_cos_files[39:]:
         dataset_name = uf.get_dataset_id(file)
         checkpoint = get_checkpoint(file,dataset_name)
         print(f"Running {dataset_name}")
         # Check if the file is already updated
-        export_name = f"{cos_matching_loc}\\{dataset_name}_Emb{checkpoint}.pkl"
-        if export_name in cos_files:
+        export_name = f"{str(high_cos_matching_loc)}\\{dataset_name}_Emb{checkpoint}.pkl"
+        if export_name in high_cos_files:
             print("-- already complete --\n")
             continue
 
