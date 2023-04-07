@@ -5,16 +5,17 @@ import universal_functions as uf
 import re
 
 # GLOBAL
-old_cos_loc= f"{uf.nep_location}BertClusteringClassification\\CosineClassification"
-old_cos_w_sent_loc = f"{old_cos_loc}\\Sent_Embeddings"
+output_loc = uf.repo_loc / 'Reconstruction_Phase/Cosine_Matching_Classification/output'
+old_cos_loc = output_loc / 'low'
+# old_cos_w_sent_loc = f"{old_cos_loc}\\Sent_Embeddings"
 
-cos_matching_loc = f"{uf.nep_location}Reconstruction_Phase\\Cosine_Matching"
-key_matching_loc = f"{uf.nep_location}Reconstruction_Phase\\Keyword_Matching"
+cos_matching_loc = str(output_loc / 'high')
+key_matching_loc = uf.repo_loc / 'Reconstruction_Phase/Keyword_Matching_Classification/output'
 
-keywordmatch_locs = uf.get_files_from_folder(key_matching_loc, 'pkl')
-cos_files = uf.get_files_from_folder(cos_matching_loc, 'pkl')
+keywordmatch_locs = uf.get_files_from_folder(str(key_matching_loc), 'pkl')
+cos_files = uf.get_files_from_folder(str(cos_matching_loc), 'pkl')
 
-old_cos_files = uf.get_files_from_folder(old_cos_loc,"pkl")+uf.get_files_from_folder(old_cos_w_sent_loc,"pkl")
+old_cos_files = uf.get_files_from_folder(str(old_cos_loc),"pkl")
 
 cos = torch.nn.CosineSimilarity(dim=0)
 
@@ -107,9 +108,9 @@ def remove_duplicates(data:dict)->dict:
     print(f"    Found {count} duplicates to remove")
     return cleaned_data
 
-# ToDO: whats going on with Far Left 2018?
+
 def run_cosine_classification_low_threshold():
-    for file in keywordmatch_locs[58:]:
+    for file in keywordmatch_locs:
         dataset_name = uf.get_dataset_id(file)
         checkpoint = get_checkpoint(file)
         print(f"Running {dataset_name}...")
