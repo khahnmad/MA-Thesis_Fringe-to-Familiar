@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Reconstruction_Phase\Cosine_Matching_Classification\High_CosineSimilarity_Classification.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Reconstruction_Phase\Vectorization\CreateEmbeddings.py">
           <value>
             <Attribute>

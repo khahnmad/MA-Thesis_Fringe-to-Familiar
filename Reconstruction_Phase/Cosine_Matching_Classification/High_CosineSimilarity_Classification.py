@@ -128,6 +128,7 @@ def classify_remaining_text(unclassified_data, inner_layer_data, starting_point)
                 for c in category:
                     if c not in u_category:
                         u_category.append(c)
+
                         unclassified_data[i]['similarity '] = [c,similarity]
 
         unclassified_data[i]['Category'] = u_category

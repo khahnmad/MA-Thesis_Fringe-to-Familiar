@@ -6,9 +6,11 @@ import sklearn
 from typing import List
 
 # GLOBAL
-cosine_loc =f"{uf.nep_location}Reconstruction_Phase\\Cosine_Matching"
-cosine_folder = uf.get_files_from_folder(cosine_loc,'pkl')
-lowclass_cosine_folder = uf.get_files_from_folder(f"{uf.nep_location}BertClusteringClassification\\CosineClassification","pkl")
+high_cosine_loc = uf.repo_loc / 'Reconstruction_Phase/Cosine_Matching_Classification/output/high'
+high_cosine_folder = uf.get_files_from_folder(str(high_cosine_loc),'pkl')
+low_cosine_loc = uf.repo_loc / 'Reconstruction_Phase/Cosine_Matching_Classification/output/low'
+lowclass_cosine_folder = uf.get_files_from_folder(str(low_cosine_loc),"pkl")
+kmeans_output= uf.repo_loc / 'Kmeans_Clustering/output'
 
 
 def do_kmeans_clustering(category:list, n_percent)->tuple:
@@ -81,20 +83,19 @@ def find_narratives(file, n_percent, export_name):
 def already_run(filename:str,n_percent)->bool:
     dataset_name = uf.get_dataset_id(filename)
     emb_checkpoint = get_checkpoint(filename)
-    export_name = f"{uf.nep_location}Reconstruction_Phase\\Kmeans_Output\\{dataset_name}_{n_percent}_Emb{emb_checkpoint}.pkl"
-    prev_files = uf.get_files_from_folder(f"{uf.nep_location}Reconstruction_Phase\\Kmeans_Output","pkl")
+    export_name = str(kmeans_output) +f"{dataset_name}_{n_percent}_Emb{emb_checkpoint}.pkl"
+    prev_files = uf.get_files_from_folder(str(kmeans_output),"pkl")
     if export_name in prev_files:
         return True
     return False
 
 def run_higher_classification_kmeans(threshold):
-    for file in cosine_folder[40:]:
+    for file in high_cosine_folder[40:]:
         print(f"\nRunning {file}")
 
         emb_checkpoint = get_checkpoint(file)
         dataset_name = uf.get_dataset_id(file)
-        export_folder = f"{uf.nep_location}Reconstruction_Phase\\Kmeans_Output"
-        export_name = f"{export_folder}\\{dataset_name}_{threshold}_Emb{emb_checkpoint}_Kmeans.pkl"
+        export_name = str(kmeans_output)+f"{dataset_name}_{threshold}_Emb{emb_checkpoint}_Kmeans.pkl"
 
         exists = already_run(file,n_percent)
         if exists ==True:
@@ -109,13 +110,13 @@ def run_lower_classification_kmeans(threshold):
         dataset_name = uf.get_dataset_id(file)
         print(f"Running {dataset_name}...")
         if threshold == 0.3:
-            export_folder = f"{uf.nep_location}BertClusteringCLassification\\KmeansOutput\\Diff_percent\\"
-            export_name = f"{export_folder}{dataset_name}_Emb{emb_checkpoint}_Kmeans_0.3.pkl"
-            kmeans_folder = uf.get_files_from_folder(export_folder,'pkl')
+            # export_folder = f"{uf.nep_location}BertClusteringCLassification\\KmeansOutput\\Diff_percent\\"
+            export_name = str(kmeans_output) + f"{dataset_name}_Emb{emb_checkpoint}_Kmeans_0.3.pkl"
+            kmeans_folder = uf.get_files_from_folder(str(kmeans_output),'pkl')
         else:
-            export_folder = f"{uf.nep_location}BertClusteringCLassification\\KmeansOutput\\"
-            export_name = f"{export_folder}{dataset_name}_Emb{emb_checkpoint}_Kmeans.pkl"
-            kmeans_folder = uf.get_files_from_folder(export_folder,'pkl')
+            # export_folder = f"{uf.nep_location}BertClusteringCLassification\\KmeansOutput\\"
+            export_name = str(kmeans_output) + f"{dataset_name}_Emb{emb_checkpoint}_Kmeans.pkl"
+            kmeans_folder = uf.get_files_from_folder(str(kmeans_output),'pkl')
 
         if export_name in kmeans_folder:
             print("    -- Already Complete --")
