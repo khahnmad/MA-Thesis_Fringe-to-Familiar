@@ -24,10 +24,24 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Reconstruction_Phase\Tracking\Pipeline\master_tracking_script.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Reconstruction_Phase\Vectorization\CreateEmbeddings.py">
           <value>
             <Attribute>
               <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Results\Evaluation\narrative_cohesion.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
             </Attribute>
           </value>
         </entry>

@@ -2,24 +2,34 @@ import pandas as pd
 import universal_functions as uf
 from statsmodels.multivariate.manova import MANOVA
 
+# GLOBAL
+
+results_folder_loc = uf.repo_loc / 'Results'
+
 
 def get_average_internal_cohesion(data:dict)->float:
+    # Input: the data from a narrative cohesion file for one dataset
+    # Outputs: the average internal cohesion score of all clusters in that dataset
     cohesion = []
-    for t in data.keys():
-        for marg_cluster_id in data[t].keys():
+    for t in data.keys(): # Iterate through the topics
+        for marg_cluster_id in data[t].keys(): # Iterate through the marginal cluster ids
             try:
+                # Get the internal cohesion score for the marginal cluster, if it exists
                 cohesion.append(float(data[t][marg_cluster_id]['cohesion']))
             except ValueError:
                 continue
 
+            # Get the direct matches of these marginal clusters
             marg_direct_matches = data[t][marg_cluster_id]['direct_matches']
-            for fs_ds in marg_direct_matches.keys():
-                for fs_cluster_id in marg_direct_matches[fs_ds].keys():
+            for fs_ds in marg_direct_matches.keys(): # Iterate through the direct match dataset names
+                for fs_cluster_id in marg_direct_matches[fs_ds].keys(): # Iterate through the cluster ids
                     try:
+                        # Get the internal cohesion score of the direct match, if it exists
                         cohesion.append(float(marg_direct_matches[fs_ds][fs_cluster_id]['internal_cohesion']))
                     except ValueError:
                         continue
 
+                    # Get the peripheral matches of these direct matches
                     periph_matches = marg_direct_matches[fs_ds][fs_cluster_id]['periph_matches']
                     for ss_ds in periph_matches.keys():
                         for ss_cluster_id in periph_matches[ss_ds].keys():
@@ -96,14 +106,18 @@ def get_dir_periph_cohesion(data):
 
 
 def summarize_narrative_cohesion():
-    cohesion_files = uf.get_files_from_folder(f"{uf.thesis_location}Results",'json')
+
+    # Get "narrative_cohesion" file locations
+    cohesion_files = uf.get_files_from_folder(str(results_folder_loc),'json')
+
+    # Create summary of data
     exportable = [['Pipeline','Internal_Cohesion','Og_to_Direct','Og_to_Periph','Direct_to_Periph']]
     for file in cohesion_files:
 
-        data = uf.import_json_content(file)
-        pipeline = file.split('Results\\')[-1][:-24]
+        data = uf.import_json_content(file) # import data
+        pipeline = file.split('Results\\')[-1][:-24] # get the name of the pipeline
 
-        for k in data.keys():
+        for k in data.keys(): # Iterate through the datasets (ex: FarRight 2016)
             if 'emoji' in k:
                 continue
             internal = get_average_internal_cohesion(data[k])
@@ -113,8 +127,10 @@ def summarize_narrative_cohesion():
             exportable.append([pipeline, internal, og_dir, og_periph, dir_periph])
     return exportable
 
-data = summarize_narrative_cohesion()
-df = pd.DataFrame(data=data[1:], columns=data[0])
+
+# GET DATA
+data = summarize_narrative_cohesion() # Summarize the data from the narrative cohesion files
+df = pd.DataFrame(data=data[1:], columns=data[0]) # Create a dataframe
 
 # MANOVA TEST
 fit = MANOVA.from_formula('Internal_Cohesion + Og_to_Direct + Og_to_Periph + Direct_to_Periph ~ Pipeline', data=df)

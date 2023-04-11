@@ -1,5 +1,5 @@
 import universal_functions as uf
-from Results.locations import *
+from Results.config.locations import *
 import random
 
 
@@ -12,14 +12,7 @@ def get_cluster_text(dataset_name, topic, cluster_id, kmeans_folder):
     return text
 
 
-# def check_peripherally_mainstreamed(class_type, cluster_type, kmeans_folder):
-#     periph_files = [x for x in
-#                     uf.get_files_from_folder(f"{uf.thesis_location}Tracking\\{class_type}Class_Threshold\\", "json")
-#                     if "periph" in x and cluster_type in x]
-#     print('write')
-
-
-def check_directly_mainstreamed(class_type, cluster_type, kmeans_folder):
+def evaluate_narrative_cohesion(class_type:str, cluster_type:str, kmeans_folder:list):
     direct_files = [x for x in uf.get_files_from_folder(f"{uf.thesis_location}Tracking\\{class_type}Class_Threshold\\","json")
                     if "direct" in x and cluster_type in x]
     export_name = f'{class_type}_{cluster_type}_Narrative_Cohesion.json'
@@ -224,20 +217,22 @@ def get_dir_periph_cohesion(data):
     return average_cohesion
 
 
-summarize_narrative_cohesion()
 
-for class_type in ["High","Low"]:
-#     for cluster_type in ["0.2","0.3"]:
-    for cluster_type in ["0.3"]:
-        if class_type == "Low":
-            if cluster_type == "0.2":
-                kmeans_folder = kmeans_97_20
-            else:
-                kmeans_folder = kmeans_97_30
-        else:
-            if cluster_type == "0.2":
-                kmeans_folder = kmeans_98_20
-            else:
-                kmeans_folder = kmeans_98_30
-        check_directly_mainstreamed(class_type, cluster_type, kmeans_folder)
+if __name__ == '__main__':
 
+    summarize_narrative_cohesion()
+
+    # Run narrative cohesion
+    for class_type in ["High","Low"]:
+        for cluster_type in ["0.2","0.3"]:
+            if class_type == "Low":
+                if cluster_type == "0.2":
+                    kmeans_folder = kmeans_97_20
+                else:
+                    kmeans_folder = kmeans_97_30
+            else:
+                if cluster_type == "0.2":
+                    kmeans_folder = kmeans_98_20
+                else:
+                    kmeans_folder = kmeans_98_30
+            evaluate_narrative_cohesion(class_type, cluster_type, kmeans_folder)
