@@ -1,0 +1,13 @@
+{"content": {"FarRight_2-2016": {
+  "Immigration": {"211": {
+    "Origin_label": "Trump immigration reform",
+    "Related_Clusters": [["CenterRight_2-2017_0.2", 17, "1"]]}},
+  "Islamophobia": {"8": {
+    "Origin_label": "1",
+    "Related_Clusters": [["CenterLeft_2-2019_0.2", 13, "-1"], ["CenterRight_2-2017_0.2", 17, "0"]]}},
+  "Anti-semitism": {}, "Transphobia": {}},
+  "FarRight_2-2017": {
+    "Immigration": {"24": {
+      "Origin_label": "migrant crisis, giving citizenship",
+      "Related_Clusters": [["CenterLeft_2-2019_0.2", 22, "1"]]}},
+    "Islamophobia": {"33": {"Origin_label": "muslims", "Related_Clusters": [["Center_2-2018_0.2", 13, "1"], ["FarLeft_2-2018_0.2", 33, "1"]]}}, "Anti-semitism": {}, "Transphobia": {"4": {"Origin_label": "transgender issues in_ California", "Related_Clusters": [["CenterRight_2-2019_0.2", 0, "1"], ["FarRight_2-2019_0.2", 1, "1"]]}}}, "FarRight_2-2018": {"Immigration": {"15": {"Origin_label": "immigration", "Related_Clusters": [["CenterLeft_2-2019_0.2", 61, "1"]]}}, "Islamophobia": {}, "Anti-semitism": {}, "Transphobia": {}}, "FarRight_2-2019": {"Immigration": {}, "Islamophobia": {}, "Anti-semitism": {}, "Transphobia": {}}}}

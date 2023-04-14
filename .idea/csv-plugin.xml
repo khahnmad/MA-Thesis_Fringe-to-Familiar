@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Reconstruction_Phase\Tracking\Pipeline\package_all_narratives_together.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Reconstruction_Phase\Vectorization\CreateEmbeddings.py">
           <value>
             <Attribute>

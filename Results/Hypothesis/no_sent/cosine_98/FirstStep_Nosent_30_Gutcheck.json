@@ -1,0 +1,20 @@
+{"content": {
+  "FarRight_2-2016": {
+    "Immigration": {
+      "396": {
+        "Origin_label": "ungrateful, criminal immigratns",
+        "Related_Clusters": [["CenterRight_2-2019_0.3", 47, "0"], ["Center_2-2018_0.3", 13, "1"], ["Center_2-2019_0.3", 34, "1"], ["FarLeft_2-2017_0.3", 26, "1"], ["FarRight_2-2019_0.3", 314, "1"]]},
+      "212": {
+        "Origin_label": "immigration policy reform is_ proamerican",
+        "Related_Clusters": [["Center_2-2017_0.3", 32, "1"]]}},
+    "Islamophobia": {"6": {
+      "Origin_label": "muslims are diverse",
+      "Related_Clusters": [["CenterRight_2-2018_0.3", 25, "1"]]}},
+    "Anti-semitism": {"17": {
+      "Origin_label": "attack on jews", "Related_Clusters": [["CenterLeft_2-2018_0.3", 8, "1"], ["Center_2-2018_0.3", 8, "1"]]}}, "Transphobia": {}},
+  "FarRight_2-2017": {
+    "Immigration": {}, "Islamophobia": {},
+    "Anti-semitism": {"72": {"Origin_label": "jewish people angry about label", "Related_Clusters": [["Center_2-2018_0.3", 12, "1"]]}}, "Transphobia": {"1": {"Origin_label": "transgender and_ california", "Related_Clusters": [["CenterLeft_2-2019_0.3", 3, "1"], ["CenterRight_2-2019_0.3", 2, "1"]]}}},
+  "FarRight_2-2018": {
+    "Immigration": {}, "Islamophobia": {},
+    "Anti-semitism": {"64": {"Origin_label": "pro-jewish imperialists", "Related_Clusters": [["Center_2-2019_0.3", 19, "1"]]}}, "Transphobia": {}}, "FarRight_2-2019": {"Immigration": {}, "Islamophobia": {}, "Anti-semitism": {}, "Transphobia": {}}}}

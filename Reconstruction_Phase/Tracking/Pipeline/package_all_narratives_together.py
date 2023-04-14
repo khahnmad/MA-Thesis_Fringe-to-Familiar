@@ -68,18 +68,20 @@ def package_narratives_together(marg_narr_loc):
     w_peripheral_matches = get_peripheral_matches(marg_narr_loc, w_direct_matches, marg_dataset)
     return w_peripheral_matches
 
-def summary(cosine_folder):
+
+# MAIN FUNCTIONS
+def collect_full_sequence(cosine_folder):
     for file in uf.get_files_from_folder(f"{cosine_folder}\\Marginal_Narratives", "json"):
         dataset_name = uf.get_dataset_id(file)
         cluster_type = file.split('_')[-1][:-5]
 
         narratives = package_narratives_together(file)
-        uf.content_json_export(f"{cosine_folder}\\{dataset_name}_{cluster_type}_all_marginal_narr_matches.json",narratives)
-
+        uf.content_json_export(f"{cosine_folder}\\Full_Sequence\\{dataset_name}_{cluster_type}_all_marginal_narr_matches.json",narratives)
 
 
 def package_just_direct_match_mainstreamed_narratives(narr_match_file):
-    export_name = narr_match_file.replace("all_marginal_narr_matches","direct_mainstreamed_narratives")
+    export_name = narr_match_file.replace("all_marginal_narr_matches",
+                                          "direct_mainstreamed_narratives").replace('Full_Sequence','Direct_Sequence')
 
     export = {}
     data = uf.import_json_content(narr_match_file)
@@ -105,8 +107,11 @@ def package_just_direct_match_mainstreamed_narratives(narr_match_file):
                     export[ds_name][t][marg_cluster_id] = data[ds_name][t][marg_cluster_id]
     uf.content_json_export(export_name, export)
 
+
 def package_just_periph_match_mainstreamed_narratives(narr_match_file):
-    export_name = narr_match_file.replace("all_marginal_narr_matches","periph_mainstreamed_narratives")
+    export_name = narr_match_file.replace("all_marginal_narr_matches",
+                                          "periph_mainstreamed_narratives").replace('Full_Sequence',
+                                                                                    'Peripheral_Sequence')
 
     export = {}
     data = uf.import_json_content(narr_match_file)
@@ -138,35 +143,14 @@ def package_just_periph_match_mainstreamed_narratives(narr_match_file):
     uf.content_json_export(export_name, export)
 
 
-summary(cosine_97)
-summary(cosine_98)
+if __name__ == '__main__':
 
-marg_97_20 = [x for x in uf.get_files_from_folder(f"{uf.thesis_location}Tracking\\LowClass_Threshold","json") if '0.2_all_marg' in x]
-marg_97_30 = [x for x in uf.get_files_from_folder(f"{uf.thesis_location}Tracking\\LowClass_Threshold","json") if '0.3_all_marg' in x]
+    collect_full_sequence(cosine_97)
+    collect_full_sequence(cosine_98)
 
-marg_98_20 = [x for x in uf.get_files_from_folder(f"{uf.thesis_location}Tracking\\HighClass_Threshold","json") if '0.2_all_marg' in x]
-marg_98_30 = [x for x in uf.get_files_from_folder(f"{uf.thesis_location}Tracking\\HighClass_Threshold","json") if '0.2_all_marg' in x]
-#
-for file in marg_97_20:
-    print('Direct')
-    package_just_direct_match_mainstreamed_narratives(file)
-    print('periph')
-    package_just_periph_match_mainstreamed_narratives(file)
+    full_seq = uf.get_files_from_folder(str(uf.repo_loc / 'Tracking/HighClass_Threshold'),'json') + \
+               uf.get_files_from_folder(str(uf.repo_loc / 'Tracking/LowClass_Threshold'),'json')
 
-for file in marg_97_30:
-    print('Direct')
-    package_just_direct_match_mainstreamed_narratives(file)
-    print('periph')
-    package_just_periph_match_mainstreamed_narratives(file)
-
-for file in marg_98_20:
-    print('Direct')
-    package_just_direct_match_mainstreamed_narratives(file)
-    print('periph')
-    package_just_periph_match_mainstreamed_narratives(file)
-
-for file in marg_98_30:
-    print('Direct')
-    package_just_direct_match_mainstreamed_narratives(file)
-    print('periph')
-    package_just_periph_match_mainstreamed_narratives(file)
+    for file in full_seq:
+        package_just_direct_match_mainstreamed_narratives(file)
+        package_just_periph_match_mainstreamed_narratives(file)
